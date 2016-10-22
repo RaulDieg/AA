@@ -6,7 +6,5 @@ function [a, b]  = descensoGradiente(a, b, alfa, iteraciones, datos)
     sumatorio1 = sum((hipotesis(datos(:, 1), a, b) - datos(:, 2)) .* datos(:, 1));
     a = a - alfa * (1/rows(datos)) * sumatorio0;
     b = b - alfa * (1/rows(datos)) * sumatorio1;
-    
-    
   endfor
 endfunction
