@@ -1,6 +1,11 @@
 function [X_norm, mu, sigma] = normalizaAtributo(X)
-  mu = mean(X);
-  sigma = std(X);
+
+  cols = columns(X)-1;
+  matrizFtrs = X(:,1:cols);
   
-  //X_norm = (X - mu)./sigma //REVISAR ESTO
+  mu = mean(matrizFtrs);
+  sigma = std(matrizFtrs);
+  
+  X_norm = [(matrizFtrs - mu)./sigma X(:,columns(X))];
+  
 endfunction

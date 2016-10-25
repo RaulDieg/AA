@@ -18,3 +18,6 @@ contour(X,Y,Z,logspace(-2,3,20))
 hold on
 [teta0,teta1] = descensoGradiente(0,0,0.01,1500,ex1data1);
 plot(teta0,teta1,"xr")
+
+//multiples variables
+matrix = [ones(4,1) matrix]
