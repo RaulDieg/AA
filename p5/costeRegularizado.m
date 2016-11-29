@@ -1,14 +1,9 @@
 function [J, grad] = costeRegularizado(Theta, X, y, lambda)
-  Theta0 = Theta(1)
-  Theta1 = Theta(2)
+  m = rows(X);
   numCols = columns(X);
-  numFils = rows(X);
-  grad = zeros(rows(Theta), 1);
   
-  %grad = 2x1
+  grad = (1/m) * sum((hipotesis(X, Theta) - y) .* X)
+  grad(:,2:numCols) += ((lambda/m) * Theta(2:numCols)); 
+  J =(1/(2*m)) * (sum((hipotesis(X, Theta) - y) .^ 2) + (lambda/(2*m)) * sum(Theta(2:end).^2));
   
-  grad0 = (1/numFils) * sum((hipotesis(X, Theta)' - y) * X);
-  grad1 = (1/numFils) * sum((hipotesis(X, Theta)' - y) * X)+LAMBDA;
-  
-  J = (1/(2 * numFils)) * sum(((hipotesis(X, Theta) - y) .^ 2)) + ((lambda/(2 * numFils)) * sum(Theta(2:end) .^ 2)); 
 endfunction

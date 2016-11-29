@@ -1,3 +1,3 @@
 function y = hipotesis(X, Theta)
-  y = X * Theta';
+  y = X * Theta;
 endfunction
