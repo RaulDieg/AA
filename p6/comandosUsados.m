@@ -28,8 +28,6 @@ model= svmTrain(X, y, C, @(x1 , x2) gaussianKernel (x1 , x2 , sigma));
 visualizeBoundary(X, y, model);
 
 ###############2. SPAM####################################
-file_contents = readFile("easy_ham/0024.txt");
-email = processEmail(file_contents);
 vocablist = getVocabList();
 
 for i=1:length(vocablist)
@@ -50,9 +48,6 @@ yval = [yeasyham(1787:end, :); yhardham(176:end, :); yspam(351:end, :)];
 model = obtenerModelosLineal(Xent, yent);
 p = damePorcentajeLineal(model, Xval, yval);
 
-model = obtenerModelosLineal(X, y);
-
-p = damePorcentajeLineal(model, Xval, yval);
 ##CALCULO MODELO GAUSSIANO#####
 inicio = ctime(time());
 modelGaussiano = obtenerModelosGaussiano(Xent, yent);
