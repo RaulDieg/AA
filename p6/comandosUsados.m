@@ -2,24 +2,26 @@
 load("ex6data1.mat")
 plotData(X, y)
 
-C = 1
-model = svmTrain(X, y, C,  @linearKernel , 1e-3, 20)
-visualizeBoundaryLinear(X, y model)
+C = 1;
+model = svmTrain(X, y, C,  @linearKernel , 1e-3, 20);
+visualizeBoundaryLinear(X, y, model)
 
 C = 100
 model = svmTrain(X, y, C,  @linearKernel , 1e-3, 20)
 visualizeBoundaryLinear(X, y, model)
 
 ##############1.2 KERNEL GAUSSIANO#######
+load("ex6data2.mat")
+plotData(X, y)
 C = 1
 sigma = 0.1
 model= svmTrain(X, y, C, @(x1 , x2) gaussianKernel (x1 , x2 , sigma));
 visualizeBoundary(X, y, model);
 
 ##############1.3 ELECCION DE LOS PARAMATROS C Y SIGMA#######
-model = obtenerModelos(X, y, Xval, yval);
-p = damePorcentaje(model, Xval, yval);
-
+load("ex6data3.mat")
+model = obtenerModelosGaussiano(X, y);
+p = damePorcentajeGaussiano(model, Xval, yval);
 C = 1
 sigma = 0.1
 model= svmTrain(X, y, C, @(x1 , x2) gaussianKernel (x1 , x2 , sigma));
@@ -34,18 +36,24 @@ for i=1:length(vocablist)
   vocabulario.(vocablist{i}) = i;
 endfor
 
-directorio = "easy_ham";
-X = zeros(1, length(vocablist));
-for i=1:2551
-  file_name = sprintf("%s/%04d.txt", directorio, i);
-  file_contents = readFile(file_name);
-  email = processEmail(file_contents);
-  Xaux = zeros(1, length(vocablist));
-  while -isempty(email)
-    [str, email] = strtok(email, [' ']);
-    if(isfield(vocabulario, str) > 0)
-      Xaux(1, vocabulario.(str)) = 1;
-    endif 
-  endwhile
-  X = [X; Xaux]
-endfor
+[Xeasyham, yeasyham] = generaDatosEmails("easy_ham", 2551, 0, vocablist, vocabulario);
+[Xhardham, yhardham] = generaDatosEmails("hard_ham", 250, 0, vocablist, vocabulario);
+[Xspam, yspam] = generaDatosEmails("spam", 500, 1, vocablist, vocabulario);
+
+Xent = [Xeasyham(1:1786, :); Xhardham(1:175, :); Xspam(1:350, :)];
+Xval = [Xeasyham(1787:end, :); Xhardham(176:end, :); Xspam(351:end, :)];
+yent = [yeasyham(1:1786, :); yhardham(1:175, :); yspam(1:350, :)];
+yval = [yeasyham(1787:end, :); yhardham(176:end, :); yspam(351:end, :)];
+
+
+##CALCULO MODELO LINEAL########
+model = obtenerModelosLineal(Xent, yent);
+p = damePorcentajeLineal(model, Xval, yval);
+
+model = obtenerModelosLineal(X, y);
+
+p = damePorcentajeLineal(model, Xval, yval);
+##CALCULO MODELO GAUSSIANO#####
+inicio = ctime(time());
+modelGaussiano = obtenerModelosGaussiano(Xent, yent);
+final = ctime(time());
