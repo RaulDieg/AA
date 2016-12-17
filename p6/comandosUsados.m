@@ -49,6 +49,16 @@ model = obtenerModelosLineal(Xent, yent);
 p = damePorcentajeLineal(model, Xval, yval);
 
 ##CALCULO MODELO GAUSSIANO#####
-inicio = ctime(time());
-modelGaussiano = obtenerModelosGaussiano(Xent, yent);
-final = ctime(time());
+p = obtenerModelosGaussianosSpam(Xent, yent, Xval, yval);
+
+ for i = valores
+    for j = valores
+      fprintf(['C: %f; sigma: %f; porcentaje: %f\n'], i, j, p(fila));
+      fila++;
+    endfor
+  endfor
+  
+  [maximo ind] = max(p);
+  i = ceil(ind/columns(valores));
+  j = ind - ((i - 1) * columns(valores));
+  fprintf(['Valor optimo->C: %f; sigma: %f; porcentaje: %f\n'], valores(i), valores(j), maximo);

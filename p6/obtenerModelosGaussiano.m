@@ -7,5 +7,4 @@ function model = obtenerModelosGaussiano(X, y)
       fila++;
     endfor
   endfor
-
 endfunction
